@@ -1,0 +1,363 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Yet Another Node.js Blogg Application API",
+        "description": "Yet Another Node.js Blogg Application API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "tags": [
+        {
+            "name": "Users",
+            "description": "API for users in the system"
+        },
+        {
+            "name": "Admin",
+            "description": "API for admin in the system"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/users": {
+            "post": {
+                "x-swagger-router-controller": "users",
+                "operationId": "createUser",
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create new user in system",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "User that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/UserWithOutId"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New user is created",
+                        "schema": {
+                            "$ref": "#/definitions/UserWithId"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "x-swagger-router-controller": "users",
+                "operationId": "getAllUser",
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users in system",
+                "parameters": [
+                    {
+                        "$ref": "#/headers"                
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type":"integer",
+                        "description": "The number of items to skip before starting to collect the result set"
+                        
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type":"integer",
+                        "description": "The numbers of items to return"   
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    },
+                    "401":{
+                        "$ref": "#/response/401"
+                    }
+                }
+            },
+            "put": {
+                "x-swagger-router-controller": "users",
+                "operationId": "updateUser",
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user with give ID",
+                "parameters": [
+                    {
+                        "$ref": "#/headers"                
+                    },
+                    {
+                        "name":"profilePic",
+                        "in": "formData",
+                        "type":"file",
+                        "description": "Upload User Profile Picture",
+                        "required":"true",
+                        "schema": {
+                            "$ref": "#/definitions/UserWithOutId"
+                        }
+                    },
+                    {
+                        "name":"firstName",
+                        "in": "formData",
+                        "type":"string",
+                        "description": "Enter First Name",
+                        "required":"true"
+                    },
+                    {
+                        "name":"lastName",
+                        "in": "formData",
+                        "type":"string",
+                        "description": "Enter Last Name",
+                        "required":"true"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/UserWithId"
+                        }
+                    },
+                    "401":{
+                        "$ref": "#/response/401"
+                    }
+                        
+                }
+            }
+        },
+        "/users/uploadFile":{
+            "put": {
+                "x-swagger-router-controller": "users",
+                "operationId": "uploadFile",
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user with give ID",
+                "parameters": [
+                    {
+                        "name":"profilePic",
+                        "in": "formData",
+                        "type":"file",
+                        "description": "Upload User Profile Picture",
+                        "required":"true",
+                        "schema": {
+                            "$ref": "#/definitions/UserWithOutId"
+                        }
+                    },
+                    {
+                        "name":"firstName",
+                        "in": "formData",
+                        "type":"string",
+                        "description": "Enter First Name",
+                        "required":"true"
+                    },
+                    {
+                        "name":"lastName",
+                        "in": "formData",
+                        "type":"string",
+                        "description": "Enter Last Name",
+                        "required":"true"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/UserWithId"
+                        }
+                    },
+                    "401":{
+                        "$ref": "#/response/401"
+                    }
+                        
+                }
+            }
+        },
+        "/users/{userId}":{
+            "delete": {
+                "summary": "Delete user with given ID",
+                "x-swagger-router-controller": "users",
+                "operationId": "deleteUser",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/headers"                
+                    },
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description":"Delete user with give ID",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User is deleted"
+                    },
+                    "401":{
+                        "$ref":"#/response/401"
+                    }
+                }
+            }
+        },
+        "/admin":{
+            "post":{
+                "summary": "Login with email and password",
+                "x-swagger-router-controller": "admin",
+                "operationId": "login",
+                "tags": [
+                    "Admin"
+                ],
+                "parameters": [
+                    {
+                        "name": "Login",
+                        "in": "body",
+                        "description":"Get admin details with email and password",
+                        "schema": {
+                            "$ref": "#/definitions/AdminWithOutId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "You have login successfully",
+                        "schema":{
+                            "$ref":"#/definitions/AdminWithId"
+                        }
+                    },
+                    "401":{
+                        "$ref":"#/response/401"
+                    }
+                }
+            },
+            "get":{
+                "summary": "Get Admin Detail with AccessToken",
+                "x-swagger-router-controller": "admin",
+                "operationId": "getAdmin",
+                "tags": [
+                    "Admin"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/headers"                
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema":{
+                            "$ref":"#/definitions/AdminWithId"
+                        }
+                    },
+                    "401":{
+                        "$ref":"#/response/401"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "UserWithId": {
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "uniqueItems": true,
+                    "format": "uuid"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "token":{
+                    "type":"string"
+                }
+            }
+        },
+        "UserWithOutId": {
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                }
+            }
+        },
+        "AdminWithOutId":{
+            "properties":{
+                "email":{
+                    "type":"string",
+                    "required":"true"
+                },
+                "password":{
+                    "type":"string",
+                    "required":"true"
+                }
+            }
+        },
+        "AdminWithId":{
+            "properties":{
+                "_id":{
+                    "type":"string",
+                    "required":"true",
+                    "format":"uuid"
+                },
+                "email":{
+                    "type":"string",
+                    "required":"true"
+                }
+            }
+        },
+        "Users": {
+            "type": "array",
+            "$ref": "#/definitions/UserWithId"
+        }
+    },
+    "response":{
+        "401":{
+            "description":"Access token is missing or invalid"
+        }
+    },
+    "headers": {
+        "name": "accessToken",
+        "in": "header",
+        "description":"an authorization header",
+        "required": "true",
+        "type": "string"
+    }
+}

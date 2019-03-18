@@ -1,0 +1,6 @@
+module.exports = {
+    EVERY_THING_IS_OK:200,
+    KEY_MISSING:403,
+    INTERNAL_SERVER_ERROR:500,
+    UNAUTHORIZED:401
+}
